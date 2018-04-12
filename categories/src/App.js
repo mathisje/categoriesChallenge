@@ -61,11 +61,12 @@ class App extends Component {
         2: ['101','102','201'],
         3: ['103','109','202']
       },
-      searchParam: '',
       newCategoryId: '',
       newParentId: '',
       newName: '',
-      newKeywords: ''
+      newKeywords: '',
+      searchParam: '',
+      searchResult: ''
     };
   }
 
@@ -129,15 +130,12 @@ class App extends Component {
       categoriesByLevel: {
         1: []
       },
-      searchParam: '',
-      newCategoryId: '',
-      newParentId: '',
-      newName: '',
-      newKeywords: ''
+      searchResult: ''
     });
   };
 
   render() {
+    console.log(this.state);
     return (
       <div className="App">
         <header className="App-header">
@@ -145,29 +143,29 @@ class App extends Component {
           <h1 className="App-title">Welcome to React</h1>
         </header>
         <div>
-          <button>Clear Categories</button>
+          <button onClick={() => this.clearCategories()}>Clear Categories</button>
         </div>
         <div>
           <div>
-            id <input />
+            id <input onChange={(e) => this.setState({newCategoryId: e.target.value})} />
           </div>
           <div>
-            parent id <input />
+            parent id <input onChange={(e) => this.setState({newParentId: e.target.value})} />
           </div>
           <div>
-            name <input />
+            name <input onChange={(e) => this.setState({newName: e.target.value})} />
           </div>
           <div>
-            keywords <input />
+            keywords <input onChange={(e) => this.setState({newKeywords: e.target.value})} />
           </div>
           <div>
-            <button>Add Category</button>
+            <button onClick={() => this.addCategory(this.state.newCategoryId, this.state.newParentId, this.state.newName, this.state.newKeywords)}>Add Category</button>
           </div></div>
         <div>
-          <input />
-          <button>Search</button>
+          <input onChange={(e) => this.setState({searchParam: e.target.value})} />
+          <button onClick={() => this.setState({searchResult: this.findCategories(this.state.searchParam)})} >Search</button>
         </div>
-        <div></div>
+        <div>{this.state.searchResult}</div>
       </div>
     );
   }
