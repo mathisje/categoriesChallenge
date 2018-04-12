@@ -75,7 +75,7 @@ class App extends Component {
       return;
     let newCategoriesById = { ...this.state.categoriesById };
     let newLevel = '1';
-    if (newParentId !== -1) {
+    if (newParentId !== '-1') {
       let newLevelNum = parseInt(newCategoriesById[newParentId].level, 10) + 1;
       newLevel = '' + newLevelNum;
     }
