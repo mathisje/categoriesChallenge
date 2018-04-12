@@ -75,7 +75,31 @@ class App extends Component {
 
 
   findCategories = (state, id) => {
-
+    let outStr = '';
+    let numId = parseInt(id, 10);
+    if (!numId) {
+      return outStr;
+    }
+    if (numId < 100) {
+      //find categories by level
+      if (!this.state.categoriesByLevel[id]) {
+        return outStr;
+      }
+      this.state.categoriesByLevel[id].forEach((cat, index) => {
+        if (index > 0)
+          outStr += ', ';
+        outStr += cat;
+      });
+    }
+    else {
+      //find category by id
+      let cat = this.state.categoriesById[id];
+      if (!cat) {
+        return outStr;
+      }
+      outStr = 'ParentCategoryID=' + cat.parentCategoryId + ', Name=' + cat.name + ', Keywords=' + cat.keywords;
+    }
+    return outStr;
   };
 
   clearCategories = () => {
