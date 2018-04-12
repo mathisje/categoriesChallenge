@@ -119,9 +119,17 @@ class App extends Component {
       if (!cat) {
         return outStr;
       }
-      outStr = 'ParentCategoryID=' + cat.parentCategoryId + ', Name=' + cat.name + ', Keywords=' + cat.keywords;
+      let kw = this.findKeywords(cat);
+      outStr = 'ParentCategoryID=' + cat.parentCategoryId + ', Name=' + cat.name + ', Keywords=' + kw;
     }
     return outStr;
+  };
+
+  findKeywords = (cat) => {
+    if (cat.keywords)
+      return cat.keywords;
+    else
+      return this.findKeywords(this.state.categoriesById[cat.parentCategoryId])
   };
 
   clearCategories = () => {
