@@ -69,12 +69,33 @@ class App extends Component {
     };
   }
 
-  addCategory = (state, category) => {
-
+  addCategory = (newCategoryId, newParentId, newName, newKeywords) => {
+    if (this.state.categoriesById[newCategoryId])
+      return;
+    let newCategoriesById = { ...this.state.categoriesById };
+    let newLevel = '1';
+    if (newParentId !== -1) {
+      let newLevelNum = parseInt(newCategoriesById[newParentId].level, 10) + 1;
+      newLevel = '' + newLevelNum;
+    }
+    newCategoriesById[newCategoryId] = {
+      parentCategoryId: newParentId,
+      name: newName,
+      keywords: newKeywords,
+      level: newLevel
+    };
+    let newCategoriesByLevel = { ...this.state.categoriesByLevel };
+    if (newCategoriesByLevel[newLevel])
+      newCategoriesByLevel[newLevel].push(newCategoryId);
+    else
+      newCategoriesByLevel[newLevel] = [newCategoryId];
+    this.setState({
+      categoriesById: newCategoriesById,
+      categoriesByLevel: newCategoriesByLevel
+    });
   };
 
-
-  findCategories = (state, id) => {
+  findCategories = (id) => {
     let outStr = '';
     let numId = parseInt(id, 10);
     if (!numId) {
@@ -103,7 +124,17 @@ class App extends Component {
   };
 
   clearCategories = () => {
-
+    this.setState({
+      categoriesById: {},
+      categoriesByLevel: {
+        1: []
+      },
+      searchParam: '',
+      newCategoryId: '',
+      newParentId: '',
+      newName: '',
+      newKeywords: ''
+    });
   };
 
   render() {
